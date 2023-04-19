@@ -10,8 +10,8 @@
 #include "addons/RTDBHelper.h"
 
 //wifi cred.
-#define WIFI_SSID "Ko's Home"
-#define WIFI_PASSWORD "soviett90blyat"
+#define WIFI_SSID "WIFI_SSID"
+#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
 
 //database cred.
 #define API_KEY "AIzaSyA8YLTyR0jw45x5RIwhQak_W08tzc-6Bvw"
