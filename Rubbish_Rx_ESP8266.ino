@@ -10,8 +10,8 @@
 #include "addons/RTDBHelper.h"
 
 //wifi cred.
-#define WIFI_SSID "WIFI_SSID"
-#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+#define WIFI_SSID "Ko's Home"
+#define WIFI_PASSWORD "soviett90blyat"
 
 //database cred.
 #define API_KEY "AIzaSyA8YLTyR0jw45x5RIwhQak_W08tzc-6Bvw"
@@ -140,6 +140,7 @@ void loop() {
   float BATTERY = obj[String("BAT")];
   float DISTANCE = obj[String("DISTANCE1")];
   float PERCENTAGE = obj[String("FULLPERC")];
+  bool LIGHT = obj[String("LIGHT")];
   Serial.println(ChipID);
   Serial.println(BATTERY);
   Serial.println(DISTANCE);
@@ -151,6 +152,8 @@ void loop() {
     json.set("BATTERYVOLT" , String(BATTERY));
     json.set("DISTANCE" , String(DISTANCE));
     json.set("PERCENTAGE" , String(PERCENTAGE));
+    json.set("LIGHT" , String(LIGHT));
+    json.set("RSSI" , String(radio.getRSSI()));
     json.set("TIMESTAMP" , String(timeClient.getFormattedTime()));
     Serial.printf("Set json... %s\n", Firebase.RTDB.setJSON(&fbdo, parentPath.c_str(), &json) ? "ok" : fbdo.errorReason().c_str());
   }
