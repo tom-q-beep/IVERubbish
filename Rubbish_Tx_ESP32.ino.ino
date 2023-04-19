@@ -1,4 +1,4 @@
-//last modified 00:17 17/4/2023
+//last modified 00:12 20/4/2023
 
 #include <RadioLib.h>
 #include <ArduinoJson.h>
@@ -9,6 +9,8 @@ JsonObject& root  = Transdata.createObject();
 #define TRIG_PIN 21
 #define ECHO_PIN 22
 #define PWRPIN 13
+
+#define ULTRASLEEP_TIME 1440
 
 char jsonChar[255];
 int resvalue;
@@ -35,6 +37,7 @@ void setup() {
   pinMode(ECHO_PIN, INPUT);
   ChipID();
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_35, 1);
+  esp_sleep_enable_timer_wakeup(ULTRASLEEP_TIME * 1000000 * 60);
   Serial.print("Device ID: ");
   Serial.print(chipId);
   Serial.println();
@@ -72,6 +75,7 @@ void loop() {
     root["BAT"] = voltage;
     root["DISTANCE1"] = distance;
     root["FULLPERC"] = percent;
+    root["LIGHT"] = digitalRead(35);
     root.printTo((char*)jsonChar, root.measureLength() + 1);
 
     delay(1200); // do not remove to ensure transmission integrity
