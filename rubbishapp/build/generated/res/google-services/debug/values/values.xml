@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">486531120424-91en8t3ok0v6b7jmgn9i2tu3uj2sc94g.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://smart-foodwaste-system-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">486531120424</string>
+    <string name="google_api_key" translatable="false">AIzaSyDWDpfgok2GMObY4nYkO4vWi_SPqiSMzJ0</string>
+    <string name="google_app_id" translatable="false">1:486531120424:android:ddc3ec59e144caf5cd641d</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDWDpfgok2GMObY4nYkO4vWi_SPqiSMzJ0</string>
+    <string name="google_storage_bucket" translatable="false">smart-foodwaste-system.appspot.com</string>
+    <string name="project_id" translatable="false">smart-foodwaste-system</string>
+</resources>
