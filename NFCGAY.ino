@@ -159,7 +159,7 @@ void loop() {
           }
           if (diff > 0) {
             pts = fbValue + diff;
-          } else if (diff <= 0 ) {
+          } else if (diff <= 0) {
             pts = fbValue + 1;
           } else {
             json.set("SCORE", 1);
