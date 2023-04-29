@@ -1,4 +1,4 @@
-//Parse JSON before upload to fireblyat, 17/4/2023
+//Final version, with battery status. 30/4/2023
 #include <RadioLib.h>
 #include <ArduinoJson.h>
 #include <Arduino.h>
@@ -29,6 +29,7 @@ String uid;
 String databasePath;
 String parentPath;
 String cipid;
+String BATTERYSTAT;
 const long utcOffsetInSeconds = 28800;
 
 int ChipID;
@@ -74,19 +75,19 @@ void setup() {
   Firebase.reconnectWiFi(true);
   fbdo.setResponseSize(4096);
   config.token_status_callback = tokenStatusCallback;
-  config.max_token_generation_retry = 5; 
+  config.max_token_generation_retry = 5;
   Firebase.begin(&config, &auth);
-    Serial.println("Getting User UID");
+  Serial.println("Getting User UID");
   while ((auth.token.uid) == "") {
     Serial.print('.');
     delay(1000);
   }
-    uid = auth.token.uid.c_str();
+  uid = auth.token.uid.c_str();
   Serial.print("User UID: ");
   Serial.println(uid);
 
   databasePath = "/UsersData/" + uid + "/Reading";
-  parentPath= databasePath + "/" + ChipID;
+  parentPath = databasePath + "/" + ChipID;
   timeClient.begin();
 }
 
@@ -143,18 +144,26 @@ void loop() {
   bool LIGHT = obj[String("LIGHT")];
   Serial.println(ChipID);
   Serial.println(BATTERY);
+  if (BATTERY >= 3.8) {
+    BATTERYSTAT = "HIGH";
+  } else if (BATTERY < 3.8 && BATTERY >= 3.61) {
+    BATTERYSTAT = "MEDIUM";
+  } else if (BATTERY <= 3.6) {
+    BATTERYSTAT = "LOW";
+  }
   Serial.println(DISTANCE);
   Serial.println(PERCENTAGE);
-  if (ChipID > 0){
+  if (ChipID > 0) {
     timeClient.update();
-    parentPath= databasePath + "/" + ChipID;
-    json.set("DEVICEID" , String(ChipID));
-    json.set("BATTERYVOLT" , String(BATTERY));
-    json.set("DISTANCE" , String(DISTANCE));
-    json.set("PERCENTAGE" , String(PERCENTAGE));
-    json.set("LIGHT" , String(LIGHT));
-    json.set("RSSI" , String(radio.getRSSI()));
-    json.set("TIMESTAMP" , String(timeClient.getFormattedTime()));
+    parentPath = databasePath + "/" + ChipID;
+    json.set("DEVICEID", String(ChipID));
+    json.set("BATTERYVOLT", String(BATTERY));
+    json.set("BATTERYSTAT", String(BATTERYSTAT));
+    json.set("DISTANCE", String(DISTANCE));
+    json.set("PERCENTAGE", String(PERCENTAGE));
+    json.set("LIGHT", String(LIGHT));
+    json.set("RSSI", String(radio.getRSSI()));
+    json.set("TIMESTAMP", String(timeClient.getFormattedTime()));
     Serial.printf("Set json... %s\n", Firebase.RTDB.setJSON(&fbdo, parentPath.c_str(), &json) ? "ok" : fbdo.errorReason().c_str());
   }
 }
