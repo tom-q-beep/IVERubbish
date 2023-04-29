@@ -1,4 +1,4 @@
-// 23/4/2023 last modified 
+//final commit, 30/4/2023 04:00
 #include <Wire.h>
 #include <PN532_I2C.h>
 #include <PN532.h>
@@ -13,8 +13,10 @@
 #include "addons/TokenHelper.h"
 #include "addons/RTDBHelper.h"
 
-#define WIFI_SSID ""your WIFI here"
-#define WIFI_PASSWORD "your WIFI Pass here"
+//#define WIFI_SSID "your_WIFI_here"
+//#define WIFI_PASSWORD "your_WIFI_Pass_here"
+#define WIFI_SSID "Ko's Home"
+#define WIFI_PASSWORD "soviett90blyat"
 #define API_KEY "AIzaSyA8YLTyR0jw45x5RIwhQak_W08tzc-6Bvw"
 #define USER_EMAIL "admin1@foodwasteapp.com"
 #define USER_PASSWORD "12345678"
@@ -94,6 +96,7 @@ void loop() {
   digitalWrite(LEDR, LOW);
   Serial.println("\nNFC tag awaiting\n");
   sg90.write(75);
+
   if (nfc.tagPresent()) {
     NfcTag tag = nfc.read();
     if (tag.hasNdefMessage()) {
@@ -132,7 +135,7 @@ void loop() {
         Serial.print("  Payload (as String): ");
         Serial.println(payloadAsString);
         Serial.println(payloadAsString2);
-        if (payloadAsString.indexOf("SBINDEV") > 0) {
+        if (payloadAsString.indexOf("SBIN") > 0) {
           pts = 0;
           digitalWrite(LEDG, HIGH);
 
@@ -156,7 +159,7 @@ void loop() {
           }
           if (diff > 0) {
             pts = fbValue + diff;
-          } else if (diff < 0) {
+          } else if (diff <= 0 ) {
             pts = fbValue + 1;
           } else {
             json.set("SCORE", 1);
@@ -171,6 +174,7 @@ void loop() {
         } else {
           Serial.println("Not a valid SBIN tag");
           digitalWrite(LEDR, HIGH);
+          delay(1000);
         }
         String uid = record.getId();
         if (uid != "") {
